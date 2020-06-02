@@ -1,0 +1,74 @@
+package ru.javawebinar.topjava.util;
+
+import ru.javawebinar.topjava.model.UserMeal;
+import ru.javawebinar.topjava.model.UserMealWithExcess;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
+import java.util.*;
+
+public class UserMealsUtil {
+    public static void main(String[] args) {
+        List<UserMeal> meals = Arrays.asList(
+                new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
+                new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
+                new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500),
+                new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100),
+                new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000),
+                new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500),
+                new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
+        );
+
+        meals.sort(new UserMealSortByDate());
+
+        List<UserMealWithExcess> mealsTo = filteredByCycles(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
+        mealsTo.forEach(System.out::println);
+
+//        System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
+    }
+
+    public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+
+        // initialize return list to be filled in the next "forEach" loop
+        List<UserMealWithExcess> userMealWithExcessList = new ArrayList<>();
+
+        // initialize temp variables for forEach cycle
+        int caloriesCounter = 0;
+        boolean isExcess = false;
+        LocalDate tempDate = null;
+
+        for (UserMeal userMeal : meals) {
+
+            // check if next meal's date is the same as previous and if so, sum the calories
+            // otherwise reset temp variables
+            if (userMeal.getDateTime().toLocalDate() != tempDate) {
+                tempDate = userMeal.getDateTime().toLocalDate();
+                caloriesCounter = userMeal.getCalories();
+            } else {
+                caloriesCounter = caloriesCounter + userMeal.getCalories();
+            }
+
+            // check if calories exceed the daily limit
+            isExcess = caloriesCounter > caloriesPerDay;
+
+            // add meals that fit time period to the return list
+            if ((userMeal.getDateTime().toLocalTime().isAfter(startTime)) &&
+                    (userMeal.getDateTime().toLocalTime().isBefore(endTime))) {
+
+                UserMealWithExcess tempUserMealWithExcess = new UserMealWithExcess(userMeal.getDateTime(),
+                        userMeal.getDescription(), userMeal.getCalories(), isExcess);
+
+                userMealWithExcessList.add(tempUserMealWithExcess);
+            }
+        }
+        return userMealWithExcessList;
+    }
+
+    public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime
+            startTime, LocalTime endTime, int caloriesPerDay) {
+        // TODO Implement by streams
+        return null;
+    }
+}
