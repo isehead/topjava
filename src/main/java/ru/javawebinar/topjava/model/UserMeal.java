@@ -1,7 +1,5 @@
 package ru.javawebinar.topjava.model;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.time.LocalDateTime;
 
 public class UserMeal {
