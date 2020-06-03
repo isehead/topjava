@@ -7,7 +7,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class UserMealsUtil {
     public static void main(String[] args) {
@@ -20,8 +22,6 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500),
                 new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
         );
-
-        meals.sort(new UserMealSortByDate());
 
         List<UserMealWithExcess> mealsTo = filteredByCycles(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
         mealsTo.forEach(System.out::println);
@@ -40,7 +40,6 @@ public class UserMealsUtil {
         LocalDate tempDate = null;
 
         for (UserMeal userMeal : meals) {
-
             // check if next meal's date is the same as previous and if so, sum the calories
             // otherwise reset temp variables
             if (userMeal.getDateTime().toLocalDate() != tempDate) {
@@ -54,8 +53,7 @@ public class UserMealsUtil {
             isExcess = caloriesCounter > caloriesPerDay;
 
             // add meals that fit time period to the return list
-            if ((userMeal.getDateTime().toLocalTime().isAfter(startTime)) &&
-                    (userMeal.getDateTime().toLocalTime().isBefore(endTime))) {
+            if (TimeUtil.isBetweenHalfOpen(userMeal.getDateTime().toLocalTime(), startTime, endTime)) {
 
                 UserMealWithExcess tempUserMealWithExcess = new UserMealWithExcess(userMeal.getDateTime(),
                         userMeal.getDescription(), userMeal.getCalories(), isExcess);
