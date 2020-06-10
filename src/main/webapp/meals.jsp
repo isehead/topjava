@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 
 <html lang="ru">
@@ -25,7 +25,7 @@
     </thead>
     <tbody>
     <c:forEach items="${mealToList}" var="mealTo">
-        <tr>
+        <tr style="${mealTo.excess == 'true' ? 'color: green' : 'color: red'}">
             <td width="200">${mealTo.dateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))}</td>
             <td width="200">${mealTo.description}</td>
             <td width="200">${mealTo.calories}</td>
