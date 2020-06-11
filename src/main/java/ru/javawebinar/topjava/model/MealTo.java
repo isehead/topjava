@@ -1,17 +1,19 @@
 package ru.javawebinar.topjava.model;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MealTo {
+
+    private int mealToId;
+    private static final AtomicInteger atomicInteger = new AtomicInteger(0);
     private final LocalDateTime dateTime;
-
     private final String description;
-
     private final int calories;
-
     private final boolean excess;
 
     public MealTo(LocalDateTime dateTime, String description, int calories, boolean excess) {
+        this.mealToId = atomicInteger.incrementAndGet();
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
@@ -32,6 +34,14 @@ public class MealTo {
 
     public boolean isExcess() {
         return excess;
+    }
+
+    public int getMealToId() {
+        return mealToId;
+    }
+
+    public void setMealToId(int mealToId) {
+        this.mealToId = mealToId;
     }
 
     @Override
