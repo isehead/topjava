@@ -49,7 +49,7 @@ public class MealsUtil {
         return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 
-    public static List<Meal> filterByUserId(List<Meal> meals, int userId){
+    public static List<Meal> filterListByUserId(List<Meal> meals, int userId){
         List<Meal> mealList = new ArrayList<>();
         for (Meal meal : meals) {
             if (meal.getUserId() == userId) {
