@@ -11,12 +11,11 @@ import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryMealRepository implements MealRepository {
@@ -65,10 +64,9 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public List<Meal> getAll(int userId) {
         log.info("getAll");
-        List<Meal> mealList = repository.values().stream()
-                .sorted(Comparator.comparing(Meal::getDate).reversed())
-                .collect(Collectors.toList());
-        return MealsUtil.filterListByUserId(mealList, userId);
+        List<Meal> mealList = new ArrayList<>(repository.values());
+        Collections.reverse(MealsUtil.filterListByUserId(mealList, userId));
+        return mealList;
     }
 
     @Override
