@@ -1,39 +1,21 @@
 package ru.javawebinar.topjava.service;
 
-import org.springframework.stereotype.Service;
+import org.springframework.lang.Nullable;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.repository.MealRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
+public interface MealService {
+    Meal get(int id, int userId);
 
-@Service
-public class MealService {
+    void delete(int id, int userId);
 
-    private final MealRepository repository;
+    List<Meal> getBetweenDates(@Nullable LocalDate startDate, @Nullable LocalDate endDate, int userId);
 
-    public MealService(MealRepository repository) {
-        this.repository = repository;
-    }
+    List<Meal> getAll(int userId);
 
-    public Meal create(Meal meal) {
-        return repository.save(meal);
-    }
+    void update(Meal meal, int userId);
 
-    public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
-    }
-
-    public Meal get(int id) {
-        return checkNotFoundWithId(repository.get(id), id);
-    }
-
-    public List<Meal> getAll() {
-        return repository.getAll();
-    }
-
-    public void update(Meal meal) {
-        checkNotFoundWithId(repository.save(meal), meal.getId());
-    }
+    Meal create(Meal meal, int userId);
 }
