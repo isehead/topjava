@@ -1,10 +1,10 @@
 package ru.javawebinar.topjava.web.meal;
 
 import org.springframework.stereotype.Controller;
-import ru.javawebinar.topjava.service.MealServiceImpl;
+import ru.javawebinar.topjava.service.MealService;
 
 @Controller
 public class MealRestController {
-    private MealServiceImpl service;
+    private MealService service;
 
 }
